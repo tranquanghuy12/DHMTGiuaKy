@@ -44,6 +44,28 @@ namespace FirstSharpGLProject
                 gl.Flush();// Thực hiện lệnh vẽ ngay lập tức thay vì đợi sau 1 khoảng thời gian
             }
         }
+        
+        public class Rectangle : Shape
+        {
+            public Point Start { get; set; }
+            public Point End { get; set; }
+            
+            
+            public override void draw(OpenGL gl)
+            {
+                base.draw(gl);
+                gl.Begin(OpenGL.GL_LINE_LOOP);
+               
+                gl.Vertex(Start.X, gl.RenderContextProvider.Height - Start.Y);//top left
+                gl.Vertex(Start.X, gl.RenderContextProvider.Height - End.Y);//bottom left
+
+                gl.Vertex(End.X, gl.RenderContextProvider.Height - End.Y);//top right
+                gl.Vertex(End.X, gl.RenderContextProvider.Height - Start.Y);//bottom right
+               
+                gl.End();
+                gl.Flush();// Thực hiện lệnh vẽ ngay lập tức thay vì đợi sau 1 khoảng thời gian
+            }
+        }
 
         /*Phần vẽ Ellipse cho bạn nào làm tham khảo*/
 
@@ -263,7 +285,19 @@ namespace FirstSharpGLProject
                         //}
                         //break;
                     case 3: // Vẽ hình chữ nhật ở đây
-                       
+                        Rectangle newRect = new Rectangle
+                        {
+                            Start = pStart,
+                            End = pEnd,
+                            ShapeColor = userColor,
+                            Size = shSize
+                        };
+                        newRect.draw(gl);
+                        if (drawing == 2)
+                        {
+                            shapes.Add(newRect);
+                            drawing = 0;
+                        }
                         break;
                     case 4: // Vẽ hình tam giác đều ở đây
                         break;
